@@ -1,7 +1,7 @@
-import Provider from "@/components/Provider";
+import Provider from "@/app/components/Provider";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Footer, MobileSidebar, Navbar, Sidebar } from "@/components";
+import { Footer, MobileSidebar, Navbar, Sidebar } from "@/app/components";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 
@@ -21,16 +21,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <Provider>
-        <body className="flex flex-col bg-teal-50 w-screen overflow-hidden">
+        <body className="flex flex-col bg-teal-50 w-screen h-screen overflow-hidden">
           <Navbar />
-          <div className="flex">
+          <div className="flex w-full">
             {" "}
-            {session && (
-              <>
-                <MobileSidebar />
-                <Sidebar />
-              </>
-            )}
+            {session?.user && <Sidebar />}
             {children}
           </div>
           <Footer />

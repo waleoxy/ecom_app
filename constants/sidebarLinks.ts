@@ -10,6 +10,12 @@ export const sidebarLinks = [
     url: "/products",
   },
   {
+    title: "categories",
+    icon: "/assets/categories-icon.svg",
+    url: "/categories",
+  },
+
+  {
     title: "orders",
     icon: "/assets/orders-icon.svg",
     url: "/orders",

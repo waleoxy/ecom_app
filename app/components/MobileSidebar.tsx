@@ -1,22 +1,17 @@
 "use client";
 
 import { sidebarLinks } from "@/constants/sidebarLinks";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
 
-const Sidebar = () => {
+const MobileSidebar = () => {
   const pathname = usePathname();
-
-  console.log("pathname", pathname);
-
   const inActiveLink =
     "flex items-center  text-gray-900 gap-1 mb-4 p-2 rounded-l-3xl";
   const activeLink = `${inActiveLink} bg-white `;
-
   return (
-    <aside className="min-w-[200px] bg-teal-50 border-r  h-screen ">
+    <aside className="flex sm:hidden w-full bg-teal-50 border-r  h-full ">
       <div className="flex flex-col capitalize text-lg pl-3  mt-4">
         {sidebarLinks.map((link) => (
           <div
@@ -33,4 +28,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default MobileSidebar;

@@ -1,7 +1,7 @@
-import Provider from "@/components/Provider";
+import Provider from "@/app/components/Provider";
 import "../globals.css";
 import type { Metadata } from "next";
-import { Footer, MobileSidebar, Navbar, Sidebar } from "@/components";
+import { Footer, MobileSidebar, Navbar, Sidebar } from "@/app/components";
 
 export const metadata: Metadata = {
   title: "OvationStore",
