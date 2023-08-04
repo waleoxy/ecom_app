@@ -2,6 +2,7 @@ import getAllProducts from "@/lib/getAllProducts";
 import Link from "next/link";
 import { DataTable } from "./components/data-table";
 import { columns } from "./components/columns";
+import getAllCategories from "@/lib/getAllCategories";
 
 const ProductPage = async () => {
   const productData: Promise<ProductData[]> = getAllProducts();

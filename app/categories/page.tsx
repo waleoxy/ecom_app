@@ -14,6 +14,8 @@ const CategoriesPage = async ({
 
   const categories = await categoryData;
 
+  console.log("cat", categories);
+
   return (
     <div className="flex flex-col bg-white p-6 rounded-xl my-4 mr-4 w-full h-full">
       <header>

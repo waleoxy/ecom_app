@@ -10,15 +10,20 @@ import {
   Dispatch,
   FormEvent,
   SetStateAction,
-  Suspense,
   useState,
 } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 
 interface IFormProps {
+  _id: string;
   productName: string;
   description: string;
   price: number;
+  category: {
+    _id: string;
+    categoryName: string;
+  };
+  categories: CategoryData[];
   images: string[];
 }
 
@@ -32,12 +37,15 @@ const Form = ({
   productName: existingProdName,
   description: existingProdDesc,
   price: existingprodPrice,
+  category: existingCat,
   images: existingImages,
-}: ProductData) => {
+  categories,
+}: IFormProps) => {
   const [formData, setFormData] = useState({
     productName: existingProdName || "",
     description: existingProdDesc || "",
     price: existingprodPrice || 0,
+    category: existingCat._id || "",
     images: existingImages || [],
   });
 
@@ -45,12 +53,16 @@ const Form = ({
   const [isLoading, setIsloading] = useState(false);
   const router = useRouter();
 
-  const { productName, description, price, images } = formData;
+  const { productName, description, price, category, images } = formData;
+  console.log("catCl", category);
 
   const createProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { productName, description, price, images } = formData;
+    const { productName, description, price, category, images } = formData;
+
+    console.log("catCl", category);
+
     try {
       if (_id) {
         const data = await fetch(
@@ -60,7 +72,13 @@ const Form = ({
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ productName, description, price, images }),
+            body: JSON.stringify({
+              productName,
+              description,
+              price,
+              category,
+              images,
+            }),
           }
         );
 
@@ -71,7 +89,13 @@ const Form = ({
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ productName, description, price, images }),
+          body: JSON.stringify({
+            productName,
+            description,
+            price,
+            category,
+            images,
+          }),
         });
         setGoToProductPage(true);
       }
@@ -122,7 +146,7 @@ const Form = ({
   return (
     <form onSubmit={createProduct} className="flex flex-col p-1 mt-5 gap-10">
       <label className="flex flex-col gap-2 mb-0 text-gray-400">
-        Product name
+        Product Name
         <input
           type="text"
           placeholder="Product name"
@@ -133,6 +157,25 @@ const Form = ({
             setFormData({ ...formData, productName: e.target.value as string })
           }
         />
+      </label>
+      <label className="flex flex-col gap-2 mb-0 text-gray-400">
+        Category Name
+        <select
+          className="cat-select"
+          value={category}
+          name="parent"
+          placeholder="Category name"
+          onChange={(e) =>
+            setFormData({ ...formData, category: e.target.value })
+          }>
+          <option>No category</option>
+          {categories?.length > 0 &&
+            categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.categoryName}
+              </option>
+            ))}
+        </select>
       </label>
       <div className="flex flex-wrap gap-2 h-auto">
         {" "}

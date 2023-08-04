@@ -13,14 +13,16 @@ export const POST = async (request: NextRequest) => {
   await mongooseConnect();
   const data: Partial<ProductData> = await request.json();
 
-  const { productName, description, price, images } = data;
+  const { productName, description, price, category, images } = data;
 
   const productDoc = await Product.create({
     productName,
     description,
     price,
+    category,
     images,
   });
+  console.log("cat", category);
 
   const path = request.nextUrl.searchParams.get("path") || "/";
 
@@ -39,7 +41,7 @@ export const PUT = async (request: NextRequest) => {
   const data: Partial<ProductData> = await request.json();
   console.log("pl", { ...data });
 
-  const { productName, description, price, images } = data;
+  const { productName, description, price, category, images } = data;
 
   if (!id) return NextResponse.json({ message: "product not found" });
 
@@ -47,7 +49,7 @@ export const PUT = async (request: NextRequest) => {
     {
       _id: id,
     },
-    { productName, description, price, images }
+    { productName, description, price, category, images }
   );
 
   const path = request.nextUrl.searchParams.get("path") || "/";
@@ -61,7 +63,9 @@ export const GET = async (request: NextRequest) => {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
   if (id) {
-    const product: ProductData | null = await Product.findOne({ _id: id });
+    const product = await Product.findOne({
+      _id: id,
+    }).populate("category");
     console.log("dt", JSON.stringify(product));
 
     const path = request.nextUrl.searchParams.get("path") || "/";
@@ -69,7 +73,7 @@ export const GET = async (request: NextRequest) => {
     revalidatePath(path);
     return NextResponse.json(product);
   }
-  const products: ProductData[] = await Product.find({});
+  const products: ProductData[] = await Product.find({}).populate("category");
   console.log("dt", JSON.stringify(products));
 
   const path = request.nextUrl.searchParams.get("path") || "/";

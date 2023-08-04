@@ -23,12 +23,6 @@ const CatForm = ({ categories, id }: ICatFormProps) => {
       categoryName: category?.categoryName as string,
       parent: category?.parent?._id as string,
     });
-    // return () => {
-    //   setCatFormData({
-    //     categoryName: "",
-    //     parent: "",
-    //   });
-    // };
   }, [id]);
 
   const { categoryName, parent } = catFormData;

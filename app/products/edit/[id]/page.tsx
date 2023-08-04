@@ -1,16 +1,16 @@
 import Form from "@/app/components/Form";
+import getAllCategories from "@/lib/getAllCategories";
 import getSingleProduct from "@/lib/getSingleProduct";
 
 const EditProduct = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  console.log("id", id);
+
+  const categoryData: Promise<CategoryData[]> = getAllCategories();
+  const categories = await categoryData;
 
   const productData: Promise<ProductData> = getSingleProduct(id);
 
-  console.log("sP", await productData);
   const singleProduct = await productData;
-
-  console.log("sP", singleProduct);
 
   return (
     <div className="bg-white p-6 rounded-xl my-4 mr-4 w-full">
@@ -19,7 +19,7 @@ const EditProduct = async ({ params }: { params: { id: string } }) => {
           Edit Product
         </h2>
       </header>
-      <Form {...singleProduct} />
+      <Form categories={categories} {...singleProduct} />
     </div>
   );
 };

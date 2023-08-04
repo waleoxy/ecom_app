@@ -3,6 +3,10 @@ type ProductData = {
   productName: string;
   description: string;
   price: number;
+  category: {
+    _id: string;
+    categoryName: string;
+  };
   images: string[];
 };
 

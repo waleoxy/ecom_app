@@ -1,18 +1,9 @@
-"use client";
-
 import Form from "@/app/components/Form";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import getAllCategories from "@/lib/getAllCategories";
 
-const NewProduct = () => {
-  const [goto, setGoto] = useState(false);
-  const router = useRouter();
-
-  console.log("gt", goto);
-  if (goto) {
-    router.push("/products");
-  }
-
+const NewProduct = async () => {
+  const categoryData: Promise<CategoryData[]> = getAllCategories();
+  const categories = await categoryData;
   return (
     <div className="bg-white p-6 rounded-xl my-4 mr-4 w-full">
       <header>
@@ -20,7 +11,18 @@ const NewProduct = () => {
           Create New Product
         </h2>
       </header>
-      <Form _id={""} productName={""} description={""} price={0} images={[]} />
+      <Form
+        _id={""}
+        productName={""}
+        description={""}
+        price={0}
+        images={[]}
+        category={{
+          _id: "",
+          categoryName: "",
+        }}
+        categories={categories}
+      />
     </div>
   );
 };
