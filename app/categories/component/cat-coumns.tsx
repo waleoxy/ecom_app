@@ -58,7 +58,9 @@ export const columns: ColumnDef<CategoryData>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onClick={() => router.push(`/products/edit/${category._id}`)}
+              onClick={() => {
+                router.push(`/categories?id=${category._id}`);
+              }}
               className=" flex items-center gap-1 cursor-pointer ">
               <Edit2Icon className="h-8 w-4" />
               <span>Edit</span>

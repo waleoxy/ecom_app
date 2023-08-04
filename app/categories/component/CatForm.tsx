@@ -2,33 +2,66 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 interface ICatFormProps {
   categories: CategoryData[];
+  id: string;
 }
 
-const CatForm = ({ categories }: ICatFormProps) => {
+const CatForm = ({ categories, id }: ICatFormProps) => {
+  const router = useRouter();
+
   const [catFormData, setCatFormData] = useState({
     categoryName: "",
     parent: "",
   });
 
-  const router = useRouter();
+  useEffect(() => {
+    const category = categories.find((item) => item._id === id);
+    setCatFormData({
+      categoryName: category?.categoryName as string,
+      parent: category?.parent?._id as string,
+    });
+    // return () => {
+    //   setCatFormData({
+    //     categoryName: "",
+    //     parent: "",
+    //   });
+    // };
+  }, [id]);
 
   const { categoryName, parent } = catFormData;
 
   async function saveCategory(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = await fetch("http://localhost:3000/api/categories", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ categoryName, parent }),
-    });
-    setCatFormData({ categoryName: "", parent: "" });
-    router.refresh();
+    console.log("iiddd", id);
+    console.log("catss", categoryName, parent);
+    if (id) {
+      const data = await fetch(
+        `http://localhost:3000/api/categories?id=${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ categoryName, parent }),
+        }
+      );
+      setCatFormData({ categoryName: "", parent: "" });
+      router.refresh();
+      router.push("/categories");
+    } else {
+      const data = await fetch("http://localhost:3000/api/categories", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ categoryName, parent }),
+      });
+      setCatFormData({ categoryName: "", parent: "" });
+      router.refresh();
+    }
   }
 
   return (
@@ -36,7 +69,7 @@ const CatForm = ({ categories }: ICatFormProps) => {
       onSubmit={saveCategory}
       className="md:flex xs:flex-col justify-between flex-wrap mt-8 gap-6 w-full">
       <label className="flex-grow flex-1">
-        &nbsp;Category Name
+        {id ? <span>Edit Category Name</span> : <span>New Category Name</span>}
         <input
           type="text"
           className="cat-input mb-10"
@@ -48,7 +81,7 @@ const CatForm = ({ categories }: ICatFormProps) => {
         />
       </label>
       <label className="flex-grow flex-1">
-        &nbsp;Parent Category
+        {id ? `Edit Parent Category` : `Parent Category`}
         <select
           className="cat-select"
           value={parent}

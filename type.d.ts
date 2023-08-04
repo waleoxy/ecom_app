@@ -9,5 +9,8 @@ type ProductData = {
 type CategoryData = {
   _id: string;
   categoryName: string;
-  parent: string;
+  parent: {
+    _id: string;
+    categoryName: string;
+  };
 };
