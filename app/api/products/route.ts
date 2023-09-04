@@ -13,7 +13,8 @@ export const POST = async (request: NextRequest) => {
   await mongooseConnect();
   const data: Partial<ProductData> = await request.json();
 
-  const { productName, description, price, category, images } = data;
+  const { productName, description, price, category, images, properties } =
+    data;
 
   const productDoc = await Product.create({
     productName,
@@ -21,6 +22,7 @@ export const POST = async (request: NextRequest) => {
     price,
     category,
     images,
+    properties,
   });
   console.log("cat", category);
 
@@ -41,7 +43,8 @@ export const PUT = async (request: NextRequest) => {
   const data: Partial<ProductData> = await request.json();
   console.log("pl", { ...data });
 
-  const { productName, description, price, category, images } = data;
+  const { productName, description, price, category, images, properties } =
+    data;
 
   if (!id) return NextResponse.json({ message: "product not found" });
 
@@ -49,7 +52,7 @@ export const PUT = async (request: NextRequest) => {
     {
       _id: id,
     },
-    { productName, description, price, category, images }
+    { productName, description, price, category, images, properties }
   );
 
   const path = request.nextUrl.searchParams.get("path") || "/";

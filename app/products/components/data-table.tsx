@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "next/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -32,8 +33,15 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const searchParams = useSearchParams();
+
   return (
-    <div className="rounded-md border p-4 mt-10 bg-slate-50">
+    <div
+      className={
+        searchParams.get("id")
+          ? "hidden "
+          : "rounded-md border p-4 mt-10 bg-slate-50"
+      }>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

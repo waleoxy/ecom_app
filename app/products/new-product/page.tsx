@@ -20,6 +20,11 @@ const NewProduct = async () => {
         category={{
           _id: "",
           categoryName: "",
+          parent: {
+            _id: "",
+            categoryName: "",
+          },
+          properties: [],
         }}
         categories={categories}
       />

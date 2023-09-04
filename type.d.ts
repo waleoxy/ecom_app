@@ -3,10 +3,8 @@ type ProductData = {
   productName: string;
   description: string;
   price: number;
-  category: {
-    _id: string;
-    categoryName: string;
-  };
+  category: Partial<CategoryData>;
+  properties: Property[];
   images: string[];
 };
 
@@ -17,4 +15,10 @@ type CategoryData = {
     _id: string;
     categoryName: string;
   };
+  properties: Property[];
+};
+
+type Property = {
+  name: string;
+  values?: string[];
 };

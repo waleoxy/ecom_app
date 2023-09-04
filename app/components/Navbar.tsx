@@ -21,7 +21,7 @@ const Navbar = () => {
   const router = useRouter();
 
   return (
-    <div className="relative h-auto">
+    <div className="relative  h-auto">
       <div>
         <div className=" sticky flex justify-between items-center pr-6 pl-3 h-[6vh] w-full bg-teal-800 z-50">
           <div className="flex gap-2 ml-0">

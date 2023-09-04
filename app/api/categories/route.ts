@@ -8,9 +8,13 @@ export const POST = async (request: NextRequest) => {
 
   const data: Partial<CategoryData> = await request.json();
 
-  const { categoryName, parent } = data;
-  console.log("pl", { categoryName, parent });
-  const categoryDoc = await Category.create({ categoryName, parent });
+  const { categoryName, parent, properties } = data;
+  console.log("pl", { categoryName, parent, properties });
+  const categoryDoc = await Category.create({
+    categoryName,
+    parent,
+    properties,
+  });
 
   const path = request.nextUrl.searchParams.get("path") || "/";
 
@@ -35,7 +39,9 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json(category);
   }
 
-  const categories: CategoryData[] = await Category.find().populate("parent");
+  const categories: CategoryData[] = await Category.find({}).populate("parent");
+
+  console.log("dt", JSON.stringify(categories));
 
   const path = request.nextUrl.searchParams.get("path") || "/";
 
@@ -53,14 +59,18 @@ export const PUT = async (request: NextRequest) => {
 
   const data: Partial<CategoryData> = await request.json();
 
-  const { categoryName, parent } = data;
+  const { categoryName, parent, properties } = data;
 
   if (!id) return NextResponse.json({ message: "Category not found" });
   await Category.findOneAndUpdate(
     {
       _id: id,
     },
-    { categoryName, parent }
+    {
+      categoryName,
+      parent,
+      properties,
+    }
   );
 
   const path = request.nextUrl.searchParams.get("path") || "/";

@@ -19,17 +19,14 @@ interface IFormProps {
   productName: string;
   description: string;
   price: number;
-  category: {
-    _id: string;
-    categoryName: string;
-  };
+  category: CategoryData;
   categories: CategoryData[];
   images: string[];
 }
 
 interface Props {
-  goto: boolean;
-  setGoto: Dispatch<SetStateAction<boolean>>;
+  name: string | undefined;
+  values: string | undefined;
 }
 
 const Form = ({
@@ -51,6 +48,11 @@ const Form = ({
 
   const [goToProductPage, setGoToProductPage] = useState(false);
   const [isLoading, setIsloading] = useState(false);
+  const [productProps, setProductProps] = useState<Props>({
+    name: "",
+    values: "",
+  });
+
   const router = useRouter();
 
   const { productName, description, price, category, images } = formData;
@@ -78,6 +80,7 @@ const Form = ({
               price,
               category,
               images,
+              productProps,
             }),
           }
         );
@@ -95,6 +98,7 @@ const Form = ({
             price,
             category,
             images,
+            productProps,
           }),
         });
         setGoToProductPage(true);
@@ -143,6 +147,44 @@ const Form = ({
     setFormData({ ...formData, images: [...newImages] });
   }
 
+  let propertiesToFill = [];
+
+  if (categories.length > 0 && category) {
+    let catInfo = categories.find(({ _id }) => _id === category);
+    if (catInfo) {
+      let ct = catInfo?.properties.map((p) => ({
+        name: p.name,
+        values: p.values?.toString(),
+      }));
+      propertiesToFill.push(...ct);
+    }
+    console.log("cat", categories);
+
+    while (catInfo?.parent?._id) {
+      const parentCat = categories.find(
+        ({ _id }) => _id === catInfo?.parent?._id
+      );
+      if (parentCat) {
+        let ct = parentCat?.properties.map((p) => ({
+          name: p.name,
+          values: p.values?.toString(),
+        }));
+        propertiesToFill.push(...ct);
+      }
+      catInfo = parentCat;
+    }
+  }
+
+  console.log("propf", propertiesToFill);
+
+  const handleChangeProdProps = (propName: string, value: string) => {
+    setProductProps((prev: any) => {
+      const newProductProps = { ...prev };
+      newProductProps[propName] = value;
+      return newProductProps;
+    });
+  };
+
   return (
     <form onSubmit={createProduct} className="flex flex-col p-1 mt-5 gap-10">
       <label className="flex flex-col gap-2 mb-0 text-gray-400">
@@ -177,6 +219,20 @@ const Form = ({
             ))}
         </select>
       </label>
+      {propertiesToFill.length > 0 &&
+        propertiesToFill.map((prop, idx) => (
+          <div key={idx} className="flex items-center pl-2 text-gray-500 gap-1">
+            <div>{prop.name}</div>
+            <select
+              value={productProps[prop.name as keyof Props]}
+              onChange={(e) => handleChangeProdProps(prop.name, e.target.value)}
+              className="cat-select">
+              {prop.values?.split(",").map((val) => (
+                <option value={val}>{val}</option>
+              ))}
+            </select>
+          </div>
+        ))}
       <div className="flex flex-wrap gap-2 h-auto">
         {" "}
         <label className="flex gap-3 items-center mt-0 text-gray-400 ">

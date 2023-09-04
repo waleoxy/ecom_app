@@ -95,11 +95,18 @@ textarea {
   @apply w-full h-[48px]  px-4 py-2 bg-slate-50 rounded-md  outline-none;
 }
 input:focus {
-  @apply border border-cyan-300;
+  @apply border border-gray-900;
 }
 textarea:focus {
-  @apply border border-cyan-300;
+  @apply border border-gray-900;
 }
 .custom-btn {
-  @apply bg-cyan-500 h-9 rounded-md text-white px-6 mt-7;
+  @apply bg-teal-600 h-9 rounded-md text-white px-6;
+}
+.custom-btn-cancel {
+  @apply bg-red-500 h-9 rounded-md text-white px-6;
+}
+
+.custom-btn-props {
+  @apply bg-transparent text-teal-500 border border-teal-600 hover:border-none hover:bg-teal-400 hover:text-white  h-9 rounded-md  px-6;
 }

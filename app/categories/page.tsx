@@ -2,6 +2,7 @@ import getAllCategories from "@/lib/getAllCategories";
 import { DataTable } from "../products/components/data-table";
 import CatForm from "./component/CatForm";
 import { columns } from "./component/cat-coumns";
+import getSingleCategory from "@/lib/getSingleCategory";
 
 const CategoriesPage = async ({
   searchParams,
@@ -11,8 +12,10 @@ const CategoriesPage = async ({
   const categoryData: Promise<CategoryData[]> = getAllCategories();
 
   const { id } = searchParams;
+  const singleCategory: Promise<CategoryData> = getSingleCategory(id);
 
   const categories = await categoryData;
+  // const category = await singleCategory;
 
   console.log("cat", categories);
 
@@ -23,7 +26,6 @@ const CategoriesPage = async ({
           Categories
         </h2>
       </header>
-
       <CatForm categories={categories} id={id} />
 
       <DataTable columns={columns} data={categories} />

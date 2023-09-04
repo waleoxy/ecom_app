@@ -11,6 +11,7 @@ const EditProduct = async ({ params }: { params: { id: string } }) => {
   const productData: Promise<ProductData> = getSingleProduct(id);
 
   const singleProduct = await productData;
+  console.log(singleProduct);
 
   return (
     <div className="bg-white p-6 rounded-xl my-4 mr-4 w-full">
@@ -19,7 +20,15 @@ const EditProduct = async ({ params }: { params: { id: string } }) => {
           Edit Product
         </h2>
       </header>
-      <Form categories={categories} {...singleProduct} />
+      <Form
+        categories={categories}
+        category={singleProduct.category}
+        _id={singleProduct._id}
+        productName={singleProduct.productName}
+        description={singleProduct.description}
+        price={singleProduct.price}
+        images={singleProduct.images}
+      />
     </div>
   );
 };

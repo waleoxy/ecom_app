@@ -21,9 +21,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <Provider>
-        <body className="flex flex-col bg-teal-50 w-screen h-screen overflow-hidden">
+        <body className="flex flex-col bg-teal-50 w-screen h-screen ">
           <Navbar />
-          <div className="flex w-full">
+          <div className="flex w-full overflow-auto">
             {" "}
             {session?.user && <Sidebar />}
             {children}
